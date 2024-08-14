@@ -1,9 +1,9 @@
 'use client';
 
-import { RoomProvider, ClientSideSuspense } from '@liveblocks/react/suspense';
-import Header from './Header';
+import { ClientSideSuspense, RoomProvider } from '@liveblocks/react/suspense';
+import { Editor } from '@/components/editor/Editor';
+import Header from '@/components/Header';
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
-import { Editor } from './editor/Editor';
 import ActiveCollaborators from './ActiveCollaborators';
 import { useEffect, useRef, useState } from 'react';
 import { Input } from './ui/input';
@@ -23,7 +23,7 @@ const CollaborativeRoom = ({
   const [loading, setLoading] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const updateTitleHandler = async (
     e: React.KeyboardEvent<HTMLInputElement>
@@ -88,7 +88,7 @@ const CollaborativeRoom = ({
                   placeholder="Enter title"
                   onChange={(e) => setDocumentTitle(e.target.value)}
                   onKeyDown={updateTitleHandler}
-                  disable={!editing}
+                  disabled={!editing}
                   className="document-title-input"
                 />
               ) : (
@@ -107,11 +107,12 @@ const CollaborativeRoom = ({
                   className="pointer"
                 />
               )}
+
               {currentUserType !== 'editor' && !editing && (
-                <p className="view-only-tag">View Only</p>
+                <p className="view-only-tag">View only</p>
               )}
 
-              {loading && <p className="text-sm text-gray-400">Saving...</p>}
+              {loading && <p className="text-sm text-gray-400">saving...</p>}
             </div>
             <div className="flex w-full flex-1 justify-end gap-2 sm:gap-3">
               <ActiveCollaborators />
